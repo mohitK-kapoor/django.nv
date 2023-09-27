@@ -42,6 +42,7 @@ jobs:
 
  sonarqube:
     runs-on: ubuntu-20.04
+     needs: test
     steps:
     - uses: actions/checkout@v2
       with:
@@ -57,7 +58,7 @@ jobs:
         args: >
           -Dsonar.projectKey=Django
 
-  integration: 
+integration: 
   runs-on: ubuntu-20.04
     needs: test
     steps:
