@@ -17,6 +17,15 @@ jobs:
           pip install -r requirements.txt
           python manage.py test taskManager
 
+  release:
+    machine: true                                        # What is this for?
+    steps:
+      - checkout
+      - run: |
+          echo  | docker login -u  --password-stdin
+          docker build -t /django.nv .   # Build the application into Docker image
+          docker push /django.nv         # Push the image into registry
+
   integration:
     docker:
       - image: python:3.6
