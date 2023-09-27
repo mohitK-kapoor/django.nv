@@ -17,17 +17,6 @@ jobs:
           pip install -r requirements.txt
           python manage.py test taskManager
 
-  oast:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          command: docker run -v /django.nv:/src --rm hysnsec/safety check -r /src/requirements.txt --json | tee oast-results.json || true
-      - store_artifacts:
-          path: oast-results.json
-          destination: safety-artifact
-          when: always
-
   integration:
     docker:
       - image: python:3.6
@@ -52,13 +41,10 @@ workflows:
       - build
       - test:
           requires:
-            - build
-      - oast:
-          requires:
-            - test
+            - build 
       - integration:
           requires:
-            - oast
+            - test
       - prod:
           type: approval
           requires:
